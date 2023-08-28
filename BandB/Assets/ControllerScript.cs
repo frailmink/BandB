@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class KeyboardControllerScript : MonoBehaviour
+public class ControllerScript : MonoBehaviour
 {
     public InputAction input;
     public Rigidbody2D rb;
@@ -31,7 +31,7 @@ public class KeyboardControllerScript : MonoBehaviour
         // rb.velocity = new Vector2(moveDirection.x * velocity, moveDirection.y * velocity);
         // old code ^^
 
-        Vector2 m = new Vector2(-move.x, move.y);
+        Vector2 m = new Vector2(move.x, move.y);
         transform.Translate(m, Space.World);
     }
 
