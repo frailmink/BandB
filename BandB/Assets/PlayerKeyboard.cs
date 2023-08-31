@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 
-public class PlayerControllers : MonoBehaviour
+public class PlayerKeyboard: MonoBehaviour
 {
     private Rigidbody2D rb;
     private PlayerInputActions PlayerControls;
@@ -26,7 +25,7 @@ public class PlayerControllers : MonoBehaviour
     private InputAction jump;
     private InputAction crouch;
 
-    float moveDirection;
+    Vector2 moveDirection = Vector2.zero;
     private void Awake()
     {
         PlayerControls = new PlayerInputActions();
@@ -37,14 +36,14 @@ public class PlayerControllers : MonoBehaviour
     }
     private void OnEnable()
     {
-        move = PlayerControls.PlayerController.Move;
+        move = PlayerControls.PlayerKeyboard.Move;
         move.Enable();
 
-        jump = PlayerControls.PlayerController.Jump;
+        jump = PlayerControls.PlayerKeyboard.Jump;
         jump.Enable();
         jump.performed += Jump;
 
-        fire = PlayerControls.PlayerController.Fire;
+        fire = PlayerControls.PlayerKeyboard.Fire;
         fire.Enable();
         fire.performed += Fire;
         //PlayerControls.Enable();
@@ -66,10 +65,9 @@ public class PlayerControllers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        moveDirection = move.ReadValue<float>();
-        
+        moveDirection = move.ReadValue<Vector2>();
 
-
+                     
         //isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
 
         //if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -77,6 +75,7 @@ public class PlayerControllers : MonoBehaviour
             //if (isGrounded)
             {
                 //Jump();
+                //doubleJump = true;
 
             }
             //else
@@ -89,18 +88,14 @@ public class PlayerControllers : MonoBehaviour
                 }
             }
         }
-        //if (isGrounded)
-        {
-
-            //doubleJump = true;
-        }
+        
 
         //anim.SetBool("isGrounded", isGrounded);
         //anim.SetFloat("MoveSpeed", Mathf.Abs(moveDirection.x));
     }
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(moveDirection * MoveSpeed, rb.velocity.y);//, moveDirection.y * MoveSpeed);
+        rb.velocity = new Vector2(moveDirection.x * MoveSpeed, rb.velocity.y);//, moveDirection.y * MoveSpeed);
 
         CheckDirection();
     }
@@ -119,12 +114,12 @@ public class PlayerControllers : MonoBehaviour
 
     void Jump(InputAction.CallbackContext context)
     {
-        rb.velocity = new Vector2(moveDirection, JumpSpeed);
+        rb.velocity = new Vector2(moveDirection.x, JumpSpeed);
     }
 
     //void DoubleJump()
     //{
-    //rb.velocity = new Vector2(moveDirection.x, JumpSpeed * DoubleJumpSpeedMultiplier);
+        //rb.velocity = new Vector2(moveDirection.x, JumpSpeed * DoubleJumpSpeedMultiplier);
     //}
 
     private void Fire(InputAction.CallbackContext context)
