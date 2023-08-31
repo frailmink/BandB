@@ -3755,16 +3755,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a364719e04fe2347a56eeb0a3c38f0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSpeed: 5
-  PlayerControls:
-    m_Name: Player Controls
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: f8366b89-2fe3-4633-984f-e706505c4a5d
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+  MoveSpeed: 2
   JumpSpeed: 5
   DoubleJumpSpeedMultiplier: 1.2
   groundCheck: {fileID: 2014373072}

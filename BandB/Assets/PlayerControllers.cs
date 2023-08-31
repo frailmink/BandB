@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerControllers : MonoBehaviour
 {
     Rigidbody2D rb;
-    public float MoveSpeed = 1.0f;
+    public float MoveSpeed = 5.0f;
     public InputAction PlayerControls;
 
     public float JumpSpeed = 5f;
@@ -50,7 +50,7 @@ public class PlayerControllers : MonoBehaviour
     {
         moveDirection = PlayerControls.ReadValue<Vector2>();
 
-        //xInput = Input.GetAxisRaw("Horizontal");
+        xInput = Input.GetAxisRaw("Horizontal");
 
         rb.velocity = new Vector2(xInput * MoveSpeed, rb.velocity.y);
 

@@ -8,7 +8,7 @@ public class Player2Controllers : MonoBehaviour
 {
     Rigidbody2D rb;
     public float MoveSpeed = 1.0f;
-    public InputAction PlayerControls;
+    public PlayerInputActions PlayerControls;
 
     public float JumpSpeed = 5f;
     public float DoubleJumpSpeedMultiplier = 1.2f;
@@ -21,23 +21,31 @@ public class Player2Controllers : MonoBehaviour
     bool isGrounded;
     Animator anim;
 
+    private InputAction move;
+    private InputAction fire;
 
     Vector2 moveDirection = Vector2.zero;
     private void Awake()
     {
-
+        PlayerControls = new PlayerInputActions();
         rb = GetComponent<Rigidbody2D>();
 
         anim = GetComponent<Animator>();
     }
     private void OnEnable()
     {
-        PlayerControls.Enable();
+        move = PlayerControls.Player.Move;
+        move.Enable();
+        fire.Enable();
+        fire.performed += Fire;
+        //PlayerControls.Enable();
 
     }
     private void OnDisable()
     {
-        PlayerControls.Disable();
+        move.Disable();
+        fire.Disable();
+        //PlayerControls.Disable();
     }
     // Start is called before the first frame update
     void Start()
@@ -48,43 +56,42 @@ public class Player2Controllers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //moveDirection = PlayerControls.ReadValue<Vector2>();
+        moveDirection = move.ReadValue<Vector2>();
 
-        xInput = Input.GetAxisRaw("Horizontal");
-
-        rb.velocity = new Vector2(xInput * MoveSpeed, rb.velocity.y);
+        //xInput = Input.GetAxisRaw("Horizontal");
+        //rb.velocity = new Vector2(xInput * MoveSpeed, rb.velocity.y);
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        //if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (isGrounded)
+            //if (isGrounded)
             {
-                Jump();
+                //Jump();
 
             }
-            else
+            //else
             {
-                if (doubleJump)
+                //if (doubleJump)
                 {
 
-                    DoubleJump();
-                    doubleJump = false;
+                    //DoubleJump();
+                    //doubleJump = false;
                 }
             }
         }
-        if (isGrounded)
+        //if (isGrounded)
         {
 
-            doubleJump = true;
+            //doubleJump = true;
         }
 
-        anim.SetBool("isGrounded", isGrounded);
-        anim.SetFloat("MoveSpeed", Mathf.Abs(rb.velocity.x));
+        //anim.SetBool("isGrounded", isGrounded);
+        anim.SetFloat("MoveSpeed", Mathf.Abs(moveDirection.x));
     }
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(rb.velocity.x * MoveSpeed, rb.velocity.y);//, moveDirection.y * MoveSpeed);
+        rb.velocity = new Vector2(moveDirection.x * MoveSpeed, moveDirection.y);//, moveDirection.y * MoveSpeed);
 
         CheckDirection();
     }
@@ -103,11 +110,16 @@ public class Player2Controllers : MonoBehaviour
 
     void Jump()
     {
-        rb.velocity = new Vector2(rb.velocity.x, JumpSpeed);
+        rb.velocity = new Vector2(moveDirection.x, JumpSpeed);
     }
 
     void DoubleJump()
     {
-        rb.velocity = new Vector2(rb.velocity.x, JumpSpeed * DoubleJumpSpeedMultiplier);
+        rb.velocity = new Vector2(moveDirection.x, JumpSpeed * DoubleJumpSpeedMultiplier);
+    }
+
+    private void Fire(InputAction.CallbackContext context)
+    {
+        Debug.Log("We Fired");
     }
 }
