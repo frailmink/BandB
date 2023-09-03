@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class PlayerKeyboard: MonoBehaviour
+public class PlayerKeyboard : MonoBehaviour
 {
     private Rigidbody2D rb;
     private PlayerInputActions PlayerControls;
@@ -14,6 +14,9 @@ public class PlayerKeyboard: MonoBehaviour
     public float DoubleJumpSpeedMultiplier = 1.2f;
     //private bool doubleJump = true;
     //private bool isGrounded;
+    private float horizontal;
+    private float jumpingPower = 16f;
+    private bool isFacingRight = true;
 
     public Transform groundCheck;
     public LayerMask groundLayer;
@@ -59,36 +62,43 @@ public class PlayerKeyboard: MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+         
     }
 
     // Update is called once per frame
     void Update()
     {
         moveDirection = move.ReadValue<Vector2>();
+        //rb.velocity = new Vector3(horizontal * MoveSpeed, rb.velocity.y);
 
-                     
         //isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
-
         //if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            //if (isGrounded)
-            {
-                //Jump();
-                //doubleJump = true;
+        //{
+        //if (isGrounded)
+        //{
+        //Jump();
+        //doubleJump = true;
+        //}
+        //else
+        //{
+        //if (doubleJump)
+        //{
+        //DoubleJump();
+        //doubleJump = false;
+        //}
+        //}
+        //}
 
-            }
-            //else
-            {
-                //if (doubleJump)
-                {
 
-                    //DoubleJump();
-                    //doubleJump = false;
-                }
-            }
-        }
-        
+        //if (!isFacingRight && horizontal > 0f)
+        //{
+            //Flip();
+        //}
+        //else if (isFacingRight && horizontal < 0f)
+        //{
+            //Flip();
+        //}
+
 
         //anim.SetBool("isGrounded", isGrounded);
         //anim.SetFloat("MoveSpeed", Mathf.Abs(moveDirection.x));
@@ -99,6 +109,14 @@ public class PlayerKeyboard: MonoBehaviour
 
         CheckDirection();
     }
+
+    //private void Flip() //This is another way of flipping make a 
+    //{
+        //isFacingRight = !isFacingRight;
+        //Vector3 localScale = transform.localScale;
+        //localScale.x *= -1f;
+        //transform.localcale = localScale;
+    //}
     void CheckDirection()
     {
         if (rb.velocity.x < 0)
