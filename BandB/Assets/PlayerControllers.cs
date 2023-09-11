@@ -124,26 +124,26 @@ public class PlayerControllers : MonoBehaviour
         CheckDirection();
     }
 
-    //private bool isFacingRight = true;
+    private bool isFacingRight = true;
 
-    //private void Flip() //This is another way of flipping make a 
-    //{
-    //isFacingRight = !isFacingRight;
-    //Vector3 localScale = transform.localScale;
-    //localScale.x *= -1f;
-    //transform.localcale = localScale;
-    //}
+    private void Flip() //This is another way of flipping make a 
+    {
+    isFacingRight = !isFacingRight;
+    Vector3 localScale = transform.localScale;
+    localScale.x *= -1f;
+    transform.localScale = localScale;
+    }
 
     void CheckDirection()
     {
         if (rb.velocity.x < 0)
         {
-            GetComponent<SpriteRenderer>().flipX = true;
+            Flip(); //GetComponent<SpriteRenderer>().flipX = true;
 
         }
         else if (rb.velocity.x > 0)
         {
-            GetComponent<SpriteRenderer>().flipX = false;
+            Flip(); //GetComponent<SpriteRenderer>().flipX = false;
         }
     }
 

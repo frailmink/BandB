@@ -119,8 +119,15 @@ public class PlayerKeyboard : MonoBehaviour
         }
 
 
-        CheckDirection();
-    }
+        float horizontalVelocity = rb.velocity.x;
+
+        // Check if the horizontal velocity has changed its sign.
+        if ((isFacingRight && horizontalVelocity < 0) || (!isFacingRight && horizontalVelocity > 0))
+        {
+            Flip();
+        }
+
+        }
 
     //private bool isFacingRight = true;
 
@@ -132,29 +139,28 @@ public class PlayerKeyboard : MonoBehaviour
     //transform.localcale = localScale;
     //}
 
-    void CheckDirection()
+    private bool isFacingRight = true;
+
+    private void Flip() //This is another way of flipping make a 
     {
-     
-        if (moveDirection.x < 0) 
-        {
-            transform.localScale = new Vector2(-2, 2); // Flip horizontally
-        }
-        else if (moveDirection.x > 0)
-        {
-            transform.localScale = new Vector2(1, 1); // Reset to original scale
-        }
-        
-
-        //if (moveDirection.x < 0)
-        {
-            //GetComponent<SpriteRenderer>().flipX = true;
-
-        }
-        //else if (moveDirection.x > 0)
-        {
-            //GetComponent<SpriteRenderer>().flipX = false;
-        }
+        isFacingRight = !isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1f;
+        transform.localScale = localScale;
     }
+
+    //void CheckDirection()
+    //{
+        //if (rb.velocity.x < 0)
+        //{
+            //Flip(); //GetComponent<SpriteRenderer>().flipX = true;
+
+        //}
+        //else if (rb.velocity.x > 0)
+        //{
+            //Flip(); //GetComponent<SpriteRenderer>().flipX = false;
+        //}
+    //}
 
     void Jump(InputAction.CallbackContext context)
     {
