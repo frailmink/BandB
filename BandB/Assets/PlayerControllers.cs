@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -10,23 +11,33 @@ public class PlayerControllers : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerInputActions PlayerControls;
 
-    public float MoveSpeed = 5.0f;
-    public float JumpSpeed = 5f;
-    public float DoubleJumpSpeedMultiplier = 1.2f;
-    //private bool doubleJump = true;
-    //private bool isGrounded;
-
-    public Transform groundCheck;
-    public LayerMask groundLayer;
-
-    //private Animator anim;
+    [Header("Move info")]
+    [SerializeField] private float MoveSpeed = 5.0f;
+    [SerializeField] private float JumpSpeed = 5f;
+    private float moveDirection;
 
     private InputAction move;
     private InputAction fire;
     private InputAction jump;
     private InputAction crouch;
 
-    float moveDirection;
+
+    public float DoubleJumpSpeedMultiplier = 1.2f;
+    private bool CanWallSlide;
+    private bool isWallSliding;
+    private bool doubleJump;
+
+    [Header("Collision info")]
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+    private bool isGrounded;
+
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private float wallcheckDistance;
+    private bool isWalled;
+
+
+
     private void Awake()
     {
         PlayerControls = new PlayerInputActions();
@@ -35,6 +46,7 @@ public class PlayerControllers : MonoBehaviour
 
         //anim = GetComponent<Animator>();
     }
+
     private void OnEnable()
     {
         move = PlayerControls.PlayerController.Move;
@@ -50,6 +62,7 @@ public class PlayerControllers : MonoBehaviour
         //PlayerControls.Enable();
 
     }
+
     private void OnDisable()
     {
         move.Disable();
@@ -57,18 +70,13 @@ public class PlayerControllers : MonoBehaviour
         fire.Disable();
         //PlayerControls.Disable();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        moveDirection = move.ReadValue<float>();
-        
+        CollicionCheck();
 
+        moveDirection = move.ReadValue<float>();
+        //rb.velocity = new Vector3(horizontal * MoveSpeed, rb.velocity.y);
 
         //isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
 
@@ -98,12 +106,34 @@ public class PlayerControllers : MonoBehaviour
         //anim.SetBool("isGrounded", isGrounded);
         //anim.SetFloat("MoveSpeed", Mathf.Abs(moveDirection.x));
     }
+
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(moveDirection * MoveSpeed, rb.velocity.y);//, moveDirection.y * MoveSpeed);
+        if (isWalled && CanWallSlide)
+        {
+            isWallSliding = true;
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.1f);
+        }
+        else
+        {
+            isWallSliding = false;
+            rb.velocity = new Vector2(moveDirection * MoveSpeed, rb.velocity.y);//, moveDirection.y * MoveSpeed);
+        }
+
 
         CheckDirection();
     }
+
+    //private bool isFacingRight = true;
+
+    //private void Flip() //This is another way of flipping make a 
+    //{
+    //isFacingRight = !isFacingRight;
+    //Vector3 localScale = transform.localScale;
+    //localScale.x *= -1f;
+    //transform.localcale = localScale;
+    //}
+
     void CheckDirection()
     {
         if (rb.velocity.x < 0)
@@ -131,4 +161,25 @@ public class PlayerControllers : MonoBehaviour
     {
         Debug.Log("We Fired");
     }
+
+    private void CollicionCheck()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
+        isWalled = Physics2D.Raycast(wallCheck.position, Vector2.right, wallcheckDistance, groundLayer);
+
+        if (!isGrounded && rb.velocity.y < 0)
+        {
+            CanWallSlide = true;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(groundCheck.position, 0.1f);
+
+        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallcheckDistance,
+                                                        wallCheck.position.y,
+                                                        wallCheck.position.z));
+    }
+
 }

@@ -9,26 +9,33 @@ public class PlayerKeyboard : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerInputActions PlayerControls;
 
-    public float MoveSpeed = 5.0f;
-    public float JumpSpeed = 5f;
-    public float DoubleJumpSpeedMultiplier = 1.2f;
-    //private bool doubleJump = true;
-    //private bool isGrounded;
-    private float horizontal;
-    private float jumpingPower = 16f;
-    private bool isFacingRight = true;
-
-    public Transform groundCheck;
-    public LayerMask groundLayer;
-
-    //private Animator anim;
+    [Header("Move info")]
+    [SerializeField] private float MoveSpeed = 5.0f;
+    [SerializeField] private float JumpSpeed = 5f;
+    Vector2 moveDirection = Vector2.zero;
 
     private InputAction move;
     private InputAction fire;
     private InputAction jump;
     private InputAction crouch;
 
-    Vector2 moveDirection = Vector2.zero;
+   
+    public float DoubleJumpSpeedMultiplier = 1.2f;
+    private bool CanWallSlide;
+    private bool isWallSliding;
+    private bool doubleJump;
+
+    [Header("Collision info")]
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
+    private bool isGrounded;
+
+    [SerializeField] private Transform wallCheck;
+    [SerializeField] private float wallcheckDistance;
+    private bool isWalled;
+
+    
+    
     private void Awake()
     {
         PlayerControls = new PlayerInputActions();
@@ -37,6 +44,7 @@ public class PlayerKeyboard : MonoBehaviour
 
         //anim = GetComponent<Animator>();
     }
+
     private void OnEnable()
     {
         move = PlayerControls.PlayerKeyboard.Move;
@@ -52,6 +60,7 @@ public class PlayerKeyboard : MonoBehaviour
         //PlayerControls.Enable();
 
     }
+
     private void OnDisable()
     {
         move.Disable();
@@ -59,64 +68,70 @@ public class PlayerKeyboard : MonoBehaviour
         fire.Disable();
         //PlayerControls.Disable();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-         
-    }
 
-    // Update is called once per frame
     void Update()
     {
+        CollicionCheck();
+
         moveDirection = move.ReadValue<Vector2>();
         //rb.velocity = new Vector3(horizontal * MoveSpeed, rb.velocity.y);
 
         //isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
+
         //if (Input.GetKeyDown(KeyCode.UpArrow))
-        //{
+        {
+            //if (isGrounded)
+            {
+                //Jump();
+
+            }
+            //else
+            {
+                //if (doubleJump)
+                {
+
+                    //DoubleJump();
+                    //doubleJump = false;
+                }
+            }
+        }
         //if (isGrounded)
-        //{
-        //Jump();
-        //doubleJump = true;
-        //}
-        //else
-        //{
-        //if (doubleJump)
-        //{
-        //DoubleJump();
-        //doubleJump = false;
-        //}
-        //}
-        //}
+        {
 
-
-        //if (!isFacingRight && horizontal > 0f)
-        //{
-            //Flip();
-        //}
-        //else if (isFacingRight && horizontal < 0f)
-        //{
-            //Flip();
-        //}
-
+            //doubleJump = true;
+        }
 
         //anim.SetBool("isGrounded", isGrounded);
         //anim.SetFloat("MoveSpeed", Mathf.Abs(moveDirection.x));
     }
+
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(moveDirection.x * MoveSpeed, rb.velocity.y);//, moveDirection.y * MoveSpeed);
+        if (isWalled && CanWallSlide)
+        {
+            isWallSliding = true;
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.1f);
+        }
+        else
+        {
+            isWallSliding = false;
+            rb.velocity = new Vector2(moveDirection.x * MoveSpeed, rb.velocity.y);//, moveDirection.y * MoveSpeed);
+        }
+
 
         CheckDirection();
     }
 
+    //private bool isFacingRight = true;
+
     //private void Flip() //This is another way of flipping make a 
     //{
-        //isFacingRight = !isFacingRight;
-        //Vector3 localScale = transform.localScale;
-        //localScale.x *= -1f;
-        //transform.localcale = localScale;
+    //isFacingRight = !isFacingRight;
+    //Vector3 localScale = transform.localScale;
+    //localScale.x *= -1f;
+    //transform.localcale = localScale;
     //}
+
     void CheckDirection()
     {
         if (rb.velocity.x < 0)
@@ -143,5 +158,25 @@ public class PlayerKeyboard : MonoBehaviour
     private void Fire(InputAction.CallbackContext context)
     {
         Debug.Log("We Fired");
+    }
+
+    private void CollicionCheck()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
+        isWalled = Physics2D.Raycast(wallCheck.position, Vector2.right, wallcheckDistance, groundLayer);
+
+        if (!isGrounded && rb.velocity.y < 0)
+        {
+            CanWallSlide = true;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(groundCheck.position, 0.1f);
+
+        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallcheckDistance,
+                                                        wallCheck.position.y,
+                                                        wallCheck.position.z));
     }
 }
