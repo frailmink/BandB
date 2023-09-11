@@ -134,14 +134,25 @@ public class PlayerKeyboard : MonoBehaviour
 
     void CheckDirection()
     {
-        if (rb.velocity.x < 0)
+     
+        if (moveDirection.x < 0) 
         {
-            GetComponent<SpriteRenderer>().flipX = true;
+            transform.localScale = new Vector2(-2, 2); // Flip horizontally
+        }
+        else if (moveDirection.x > 0)
+        {
+            transform.localScale = new Vector2(1, 1); // Reset to original scale
+        }
+        
+
+        //if (moveDirection.x < 0)
+        {
+            //GetComponent<SpriteRenderer>().flipX = true;
 
         }
-        else if (rb.velocity.x > 0)
+        //else if (moveDirection.x > 0)
         {
-            GetComponent<SpriteRenderer>().flipX = false;
+            //GetComponent<SpriteRenderer>().flipX = false;
         }
     }
 
