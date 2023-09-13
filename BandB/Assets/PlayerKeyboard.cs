@@ -21,6 +21,7 @@ public class PlayerKeyboard : MonoBehaviour
 
    
     public float DoubleJumpSpeedMultiplier = 1.2f;
+    public float isWallSlidingSpeed; 
     private bool CanWallSlide;
     private bool isWallSliding;
     private bool doubleJump;
@@ -32,6 +33,7 @@ public class PlayerKeyboard : MonoBehaviour
 
     [SerializeField] private Transform wallCheck;
     [SerializeField] private float wallcheckDistance;
+    [SerializeField] private float wallcheckRadius = 0.1f;
     private bool isWalled;
 
     
@@ -107,10 +109,11 @@ public class PlayerKeyboard : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isWalled && CanWallSlide)
+        if (isWalled && CanWallSlide && rb.velocity.x <= 0)
         {
             isWallSliding = true;
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.1f);
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -isWallSlidingSpeed, float.MaxValue));
+            //rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.1f);
         }
         else
         {
@@ -180,7 +183,8 @@ public class PlayerKeyboard : MonoBehaviour
     private void CollicionCheck()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
-        isWalled = Physics2D.Raycast(wallCheck.position, Vector2.right, wallcheckDistance, groundLayer);
+        isWalled = Physics2D.OverlapCircle(wallCheck.position, wallcheckRadius, groundLayer);
+        //isWalled = Physics2D.Raycast(wallCheck.position, Vector2.right, wallcheckDistance, groundLayer);
 
         if (!isGrounded && rb.velocity.y < 0)
         {
@@ -191,9 +195,7 @@ public class PlayerKeyboard : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, 0.1f);
-
-        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallcheckDistance,
-                                                        wallCheck.position.y,
-                                                        wallCheck.position.z));
+        Gizmos.DrawWireSphere(wallCheck.position, wallcheckRadius);
+        //Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallcheckDistance, wallCheck.position.y, wallCheck.position.z));
     }
 }
