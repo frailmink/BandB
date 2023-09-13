@@ -23,7 +23,7 @@ public class PlayerKeyboard : MonoBehaviour
     public float DoubleJumpSpeedMultiplier = 1.2f;
     public float isWallSlidingSpeed; 
     private bool CanWallSlide;
-    private bool isWallSliding;
+    // private bool isWallSliding;
     private bool doubleJump;
     private bool isFacingRight = true;
 
@@ -44,6 +44,8 @@ public class PlayerKeyboard : MonoBehaviour
         PlayerControls = new PlayerInputActions();
 
         rb = GetComponent<Rigidbody2D>();
+
+        isGrounded = true;
 
         //anim = GetComponent<Animator>();
     }
@@ -112,13 +114,13 @@ public class PlayerKeyboard : MonoBehaviour
     {
         if (isWalled && CanWallSlide)
         {
-            isWallSliding = true;
+            // isWallSliding = true;
             rb.velocity = new Vector2(moveDirection.x * MoveSpeed, Mathf.Clamp(rb.velocity.y, -isWallSlidingSpeed, float.MaxValue));
             //rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.1f);
         }
         else
         {
-            isWallSliding = false;
+            // isWallSliding = false;
             rb.velocity = new Vector2(moveDirection.x * MoveSpeed, rb.velocity.y);//, moveDirection.y * MoveSpeed);
         }
 
@@ -166,7 +168,10 @@ public class PlayerKeyboard : MonoBehaviour
 
     void Jump(InputAction.CallbackContext context)
     {
-        rb.velocity = new Vector2(moveDirection.x, JumpSpeed);
+        if (isGrounded)
+        {
+            rb.velocity = new Vector2(moveDirection.x, JumpSpeed);
+        }
     }
 
     //void DoubleJump()

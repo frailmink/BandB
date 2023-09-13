@@ -8,15 +8,23 @@ public class LogicManager : MonoBehaviour
 {
     public Tilemap map;
     public TileBase tile;
+    public TileBase emptyTile;
     public GameObject keyboardM;
     public GameObject controlerM;
 
-    private Vector2 keyboardMLoc;
-    private Vector2 controlerMLoc;
+    private Vector2 keyboardMLocOld;
+    private Vector2 controlerMLocOld;
+
+    private TileBase oldTileKey;
+    private TileBase oldTileCont;
 
     void Awake()
     {
         Cursor.visible = false;
+        oldTileKey = emptyTile;
+        oldTileCont = emptyTile;
+        keyboardMLocOld = keyboardM.transform.position;
+        controlerMLocOld = controlerM.transform.position;
     }
 
     private void Update()
@@ -24,17 +32,38 @@ public class LogicManager : MonoBehaviour
         // mPos = Mouse.current.position.ReadValue();
         // mWorldPos = Camera.main.ScreenToWorldPoint(mPos);
 
-        keyboardMLoc = keyboardM.transform.position;
-        controlerMLoc = controlerM.transform.position;
+        Vector2 keyboardMLoc = keyboardM.transform.position;
+        Vector2 controlerMLoc = controlerM.transform.position;
 
-        // set the tiles white when the mouse hovers over it
-        Vector3Int temp = map.WorldToCell(keyboardMLoc);
+        SetTiles(keyboardMLoc, ref keyboardMLocOld, ref oldTileKey);
+        SetTiles(controlerMLoc, ref controlerMLocOld, ref oldTileCont);
+    }
 
-        map.SetTile(temp, tile);
+    private void SetTiles(Vector2 mLoc, ref Vector2 oldLoc, ref TileBase oldTile)
+    {
+        // transforms the location of mouse into a cell location
+        Vector3Int tempMLoc = map.WorldToCell(mLoc);
+        Vector3Int tempMLocOld = map.WorldToCell(oldLoc);
 
-        // set the tiles white when the controler hoevers over it
-        temp = map.WorldToCell(controlerMLoc);
+        if (tempMLocOld != tempMLoc)
+        {
+            // get the tile that is currently at the location
+            TileBase tempTile = map.GetTile(tempMLoc);
 
-        map.SetTile(temp, tile);
+            // set the tiles white when a mouse hovers over it
+            TileCreation(tile, tempMLoc);
+
+            // remove the previous tile
+            TileCreation(oldTile, tempMLocOld);
+
+            oldTile = tempTile;
+            oldLoc = mLoc;
+        }
+    }
+
+    private void TileCreation(TileBase t, Vector3Int pos)
+    {
+        // sets the tile in the position given
+        map.SetTile(pos, t);
     }
 }
