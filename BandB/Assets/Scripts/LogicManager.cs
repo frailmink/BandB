@@ -12,6 +12,8 @@ public class LogicManager : MonoBehaviour
     public GameObject keyboardM;
     public GameObject controlerM;
 
+    public List<ScriptableObject> traps;
+
     private Vector2 keyboardMLocOld;
     private Vector2 controlerMLocOld;
 
