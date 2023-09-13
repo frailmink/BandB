@@ -25,6 +25,7 @@ public class PlayerKeyboard : MonoBehaviour
     private bool CanWallSlide;
     private bool isWallSliding;
     private bool doubleJump;
+    private bool isFacingRight = true;
 
     [Header("Collision info")]
     [SerializeField] private Transform groundCheck;
@@ -109,10 +110,10 @@ public class PlayerKeyboard : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isWalled && CanWallSlide && rb.velocity.x <= 0)
+        if (isWalled && CanWallSlide)
         {
             isWallSliding = true;
-            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -isWallSlidingSpeed, float.MaxValue));
+            rb.velocity = new Vector2(moveDirection.x * MoveSpeed, Mathf.Clamp(rb.velocity.y, -isWallSlidingSpeed, float.MaxValue));
             //rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.1f);
         }
         else
@@ -130,7 +131,7 @@ public class PlayerKeyboard : MonoBehaviour
             Flip();
         }
 
-        }
+    }
 
     //private bool isFacingRight = true;
 
@@ -141,8 +142,6 @@ public class PlayerKeyboard : MonoBehaviour
     //localScale.x *= -1f;
     //transform.localcale = localScale;
     //}
-
-    private bool isFacingRight = true;
 
     private void Flip() //This is another way of flipping make a 
     {
