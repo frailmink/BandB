@@ -33,7 +33,6 @@ public class PlayerKeyboard : MonoBehaviour
     private bool isGrounded;
 
     [SerializeField] private Transform wallCheck;
-    [SerializeField] private float wallcheckDistance;
     [SerializeField] private float wallcheckRadius = 0.1f;
     private bool isWalled;
 
@@ -124,11 +123,8 @@ public class PlayerKeyboard : MonoBehaviour
             rb.velocity = new Vector2(moveDirection.x * MoveSpeed, rb.velocity.y);//, moveDirection.y * MoveSpeed);
         }
 
-
-        float horizontalVelocity = rb.velocity.x;
-
         // Check if the horizontal velocity has changed its sign.
-        if ((isFacingRight && horizontalVelocity < 0) || (!isFacingRight && horizontalVelocity > 0))
+        if ((isFacingRight && rb.velocity.x < 0) || (!isFacingRight && rb.velocity.x > 0))
         {
             Flip();
         }

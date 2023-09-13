@@ -23,9 +23,11 @@ public class PlayerControllers : MonoBehaviour
 
 
     public float DoubleJumpSpeedMultiplier = 1.2f;
+    public float isWallSlidingSpeed;
     private bool CanWallSlide;
-    private bool isWallSliding;
+    // private bool isWallSliding;
     private bool doubleJump;
+    private bool isFacingRight = true;
 
     [Header("Collision info")]
     [SerializeField] private Transform groundCheck;
@@ -33,7 +35,7 @@ public class PlayerControllers : MonoBehaviour
     private bool isGrounded;
 
     [SerializeField] private Transform wallCheck;
-    [SerializeField] private float wallcheckDistance;
+    [SerializeField] private float wallcheckRadius = 0.1f;
     private bool isWalled;
 
 
@@ -43,6 +45,8 @@ public class PlayerControllers : MonoBehaviour
         PlayerControls = new PlayerInputActions();
 
         rb = GetComponent<Rigidbody2D>();
+
+        isGrounded = true;
 
         //anim = GetComponent<Animator>();
     }
@@ -111,45 +115,51 @@ public class PlayerControllers : MonoBehaviour
     {
         if (isWalled && CanWallSlide)
         {
-            isWallSliding = true;
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.1f);
+            // isWallSliding = true;
+            rb.velocity = new Vector2(moveDirection * MoveSpeed, Mathf.Clamp(rb.velocity.y, -isWallSlidingSpeed, float.MaxValue));
+            //rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.1f);
         }
         else
         {
-            isWallSliding = false;
+            // isWallSliding = false;
             rb.velocity = new Vector2(moveDirection * MoveSpeed, rb.velocity.y);//, moveDirection.y * MoveSpeed);
         }
+        //CheckDirection();
 
+        // Check if the horizontal velocity has changed its sign.
+        if ((isFacingRight && rb.velocity.x < 0) || (!isFacingRight && rb.velocity.x > 0))
+        {
+            Flip();
+        }
 
-        CheckDirection();
     }
-
-    private bool isFacingRight = true;
-
     private void Flip() //This is another way of flipping make a 
     {
-    isFacingRight = !isFacingRight;
-    Vector3 localScale = transform.localScale;
-    localScale.x *= -1f;
-    transform.localScale = localScale;
+        isFacingRight = !isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1f;
+        transform.localScale = localScale;
     }
 
-    void CheckDirection()
-    {
-        if (rb.velocity.x < 0)
-        {
-            Flip(); //GetComponent<SpriteRenderer>().flipX = true;
+    //void CheckDirection()
+    //{
+    //if (rb.velocity.x < 0)
+    //{
+    //Flip(); //GetComponent<SpriteRenderer>().flipX = true;
 
-        }
-        else if (rb.velocity.x > 0)
-        {
-            Flip(); //GetComponent<SpriteRenderer>().flipX = false;
-        }
-    }
+    //}
+    //else if (rb.velocity.x > 0)
+    //{
+    //Flip(); //GetComponent<SpriteRenderer>().flipX = false;
+    //}
+    //}
 
     void Jump(InputAction.CallbackContext context)
     {
-        rb.velocity = new Vector2(moveDirection, JumpSpeed);
+        if (isGrounded)
+        {
+            rb.velocity = new Vector2(moveDirection, JumpSpeed);
+        }
     }
 
     //void DoubleJump()
@@ -165,7 +175,7 @@ public class PlayerControllers : MonoBehaviour
     private void CollicionCheck()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
-        isWalled = Physics2D.Raycast(wallCheck.position, Vector2.right, wallcheckDistance, groundLayer);
+        isWalled = Physics2D.OverlapCircle(wallCheck.position, wallcheckRadius, groundLayer);
 
         if (!isGrounded && rb.velocity.y < 0)
         {
@@ -176,10 +186,8 @@ public class PlayerControllers : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(groundCheck.position, 0.1f);
-
-        Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallcheckDistance,
-                                                        wallCheck.position.y,
-                                                        wallCheck.position.z));
+        Gizmos.DrawWireSphere(wallCheck.position, wallcheckRadius);
+        //Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallcheckDistance, wallCheck.position.y, wallCheck.position.z));
     }
 
 }
