@@ -22,22 +22,26 @@ public class PlayerKeyboard : MonoBehaviour
    
     public float DoubleJumpSpeedMultiplier = 1.2f;
     public float isWallSlidingSpeed; 
+    private bool CanDoubleJump;
     private bool CanWallSlide;
-    // private bool isWallSliding;
-    private bool doubleJump;
+    private bool isWallSliding;
+
     private bool isFacingRight = true;
+    private float FacingDirection = 1;
+    [SerializeField] private Vector2 wallJumpDirection;
 
     [Header("Collision info")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float groundCheckDistance;
     private bool isGrounded;
 
     [SerializeField] private Transform wallCheck;
-    [SerializeField] private float wallcheckRadius = 0.1f;
+    [SerializeField] private float wallcheckDistance;
     private bool isWalled;
 
-    
-    
+
+
     private void Awake()
     {
         PlayerControls = new PlayerInputActions();
@@ -76,35 +80,23 @@ public class PlayerKeyboard : MonoBehaviour
     void Update()
     {
         CollicionCheck();
+        FlipController();
+
+        if (isGrounded)
+        {
+            //CanMove = true;
+            CanDoubleJump = true;
+        }
+
+        if (isWalled)
+        {
+            isWallSliding = true;
+            CanDoubleJump = true;
+
+        }
 
         moveDirection = move.ReadValue<Vector2>();
-        //rb.velocity = new Vector3(horizontal * MoveSpeed, rb.velocity.y);
-
-        //isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
-
-        //if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            //if (isGrounded)
-            {
-                //Jump();
-
-            }
-            //else
-            {
-                //if (doubleJump)
-                {
-
-                    //DoubleJump();
-                    //doubleJump = false;
-                }
-            }
-        }
-        //if (isGrounded)
-        {
-
-            //doubleJump = true;
-        }
-
+        
         //anim.SetBool("isGrounded", isGrounded);
         //anim.SetFloat("MoveSpeed", Mathf.Abs(moveDirection.x));
     }
@@ -113,13 +105,10 @@ public class PlayerKeyboard : MonoBehaviour
     {
         if (isWalled && CanWallSlide)
         {
-            // isWallSliding = true;
-            rb.velocity = new Vector2(moveDirection.x * MoveSpeed, Mathf.Clamp(rb.velocity.y, -isWallSlidingSpeed, float.MaxValue));
-            //rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.1f);
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -isWallSlidingSpeed, float.MaxValue));
         }
         else
         {
-            // isWallSliding = false;
             rb.velocity = new Vector2(moveDirection.x * MoveSpeed, rb.velocity.y);//, moveDirection.y * MoveSpeed);
         }
 
@@ -141,31 +130,47 @@ public class PlayerKeyboard : MonoBehaviour
     //transform.localcale = localScale;
     //}
 
-    private void Flip() //This is another way of flipping make a 
+    private void Flip()
     {
+        FacingDirection = FacingDirection * -1;
         isFacingRight = !isFacingRight;
-        Vector3 localScale = transform.localScale;
-        localScale.x *= -1f;
-        transform.localScale = localScale;
+        transform.Rotate(0, 180, 0);
+    }
+
+    private void FlipController()
+    {
+        if (moveDirection.x > 0 && !isFacingRight)
+            Flip();
+        else if (moveDirection.x < 0 && isFacingRight)
+            Flip();
     }
 
     //void CheckDirection()
     //{
-        //if (rb.velocity.x < 0)
-        //{
-            //Flip(); //GetComponent<SpriteRenderer>().flipX = true;
+    //if (rb.velocity.x < 0)
+    //{
+    //Flip(); //GetComponent<SpriteRenderer>().flipX = true;
 
-        //}
-        //else if (rb.velocity.x > 0)
-        //{
-            //Flip(); //GetComponent<SpriteRenderer>().flipX = false;
-        //}
+    //}
+    //else if (rb.velocity.x > 0)
+    //{
+    //Flip(); //GetComponent<SpriteRenderer>().flipX = false;
+    //}
     //}
 
     void Jump(InputAction.CallbackContext context)
     {
         if (isGrounded)
         {
+            rb.velocity = new Vector2(moveDirection.x, JumpSpeed);
+        }
+        else if (isWalled)
+        {
+            rb.velocity = new Vector2(10 * (-FacingDirection), JumpSpeed);
+        }
+        else if (CanDoubleJump)
+        {
+            CanDoubleJump = false;
             rb.velocity = new Vector2(moveDirection.x, JumpSpeed);
         }
     }
@@ -182,20 +187,23 @@ public class PlayerKeyboard : MonoBehaviour
 
     private void CollicionCheck()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
-        isWalled = Physics2D.OverlapCircle(wallCheck.position, wallcheckRadius, groundLayer);
-        //isWalled = Physics2D.Raycast(wallCheck.position, Vector2.right, wallcheckDistance, groundLayer);
+        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
+        isWalled = Physics2D.Raycast(transform.position, Vector2.right * FacingDirection, wallcheckDistance, groundLayer);
 
         if (!isGrounded && rb.velocity.y < 0)
         {
             CanWallSlide = true;
         }
+        if (!isWalled)
+        {
+            CanWallSlide = false;
+        }
+
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(groundCheck.position, 0.1f);
-        Gizmos.DrawWireSphere(wallCheck.position, wallcheckRadius);
-        //Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallcheckDistance, wallCheck.position.y, wallCheck.position.z));
+        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x + wallcheckDistance * FacingDirection, transform.position.y));
+        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - groundCheckDistance));
     }
 }
