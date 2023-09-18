@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c95b622bbd9318841bcc73488b16d473, type: 3}
   m_Name: platform2x1
   m_EditorClassIdentifier: 
-  tiles: []
+  tiles:
+  - {fileID: 11400000, guid: cdf27f8818dad5e4fbf1dcaf2884ea14, type: 2}
+  - {fileID: 11400000, guid: cdf27f8818dad5e4fbf1dcaf2884ea14, type: 2}
