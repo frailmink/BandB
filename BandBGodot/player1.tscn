@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dxjlmffqrdmsk"]
+
+[ext_resource type="Script" path="res://player1.gd" id="1_k583j"]
+[ext_resource type="Texture2D" uid="uid://cmaix4e802h62" path="res://sprites/playerKeyboard.png" id="1_qktai"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_o5tm7"]
+radius = 13.0
+height = 64.0
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(0, -15)
+script = ExtResource("1_k583j")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(15, -17)
+shape = SubResource("CapsuleShape2D_o5tm7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(16, -17)
+scale = Vector2(0.944336, 1.00195)
+texture = ExtResource("1_qktai")
