@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dlicvg8nvofj7"]
+
+[ext_resource type="Script" path="res://cursorKeyboard.gd" id="1_siit1"]
+[ext_resource type="Texture2D" uid="uid://hmib1yhr7lj" path="res://sprites/mouseCursor.png" id="2_5gpk5"]
+
+[node name="cursorKeyboard" type="Node2D"]
+position = Vector2(7, 1)
+script = ExtResource("1_siit1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(18.75, 17.9582)
+scale = Vector2(1.20313, 1.31511)
+texture = ExtResource("2_5gpk5")
+
+[node name="Marker2D" type="Marker2D" parent="Sprite2D"]
+position = Vector2(-16, -14.7732)

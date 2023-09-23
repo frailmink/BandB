@@ -1,41 +1,22 @@
 extends Camera2D
 
-var move_speed = 0.5  # camera position lerp speed
-var zoom_speed = 0.25  # camera zoom lerp speed
-var min_zoom = 1.5  # camera won't zoom closer than this
-var max_zoom = 5  # camera won't zoom farther than this
-var margin = Vector2(400, 200)  # include some buffer area around targets
+var target1: Node2D
+var target2: Node2D
+var zoom_speed: float = 0.1
+var zoom_min: float = 0.5
+var zoom_max: float = 2.0
+var smoothing: float = 0.1
 
-var targets = []  # Array of targets to be tracked.
-
-var screen_size = get_viewport_rect().size
-
+func add_target(t1, t2):
+	target1 = t1
+	target2 = t2
+	
 func _process(delta):
-	if !targets:
-		return
-	# Keep the camera centered between the targets
-	var p = Vector2.ZERO
-	for target in targets:
-		p += target.position
-	p /= targets.size()
-	position = lerp(position, p, move_speed)
-	# Find the zoom that will contain all targets
-	var r = Rect2(position, Vector2.ONE)
-	for target in targets:
-		r = r.expand(target.position)
-	r = r.grow_individual(margin.x, margin.y, margin.x, margin.y)
-	var d = max(r.size.x, r.size.y)
-	var z
-	if r.size.x > r.size.y * screen_size.aspect():
-		z = clamp(r.size.x / screen_size.x, min_zoom, max_zoom)
-	else:
-		z = clamp(r.size.y / screen_size.y, min_zoom, max_zoom)
-	zoom = lerp(zoom, Vector2.ONE * z, zoom_speed)
-
-func add_target(t):
-	if not t in targets:
-		targets.append(t)
-
-func remove_target(t):
-	if t in targets:
-		targets.erase(t)
+	var midpoint = (target1.global_position + target2.global_position) / 2
+	var distance = target1.global_position.distance_to(target2.global_position)
+	
+	var desired_zoom = clamp(1000 / distance, zoom_min, zoom_max)
+	zoom.x = lerp(zoom.x, desired_zoom, zoom_speed)
+	zoom.y = lerp(zoom.y, desired_zoom, zoom_speed)
+	
+	global_position = global_position.lerp(midpoint, smoothing)

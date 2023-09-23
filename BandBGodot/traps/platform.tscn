@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3qpje1p6siyc"]
+
+[ext_resource type="Script" path="res://traps/platform.gd" id="1_kaw6t"]
+[ext_resource type="Texture2D" uid="uid://b56jn7hnw8jcw" path="res://sprites/tileset1.png" id="1_tlm4l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0re4u"]
+size = Vector2(91.5, 20)
+
+[node name="platform" type="Node2D"]
+script = ExtResource("1_kaw6t")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(32, 0)
+texture = ExtResource("1_tlm4l")
+region_enabled = true
+region_rect = Rect2(0, 64, 96, 32)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Sprite2D"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/StaticBody2D"]
+position = Vector2(0.25, -6)
+shape = SubResource("RectangleShape2D_0re4u")

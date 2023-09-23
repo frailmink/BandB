@@ -1,11 +1,12 @@
 extends CharacterBody2D
 
-const SPEED = 1000.0
+const SPEED = 400.0
+const LERP_SPEED = 1000
 const JUMP_VELOCITY = -500.0
 var CanDoubleJump : bool = true
 var gravoty = 1200 
 var VEL = Vector2()
-var SLPIPYYYY = 10
+var SLPIPYYYY = 1
 
 
 
@@ -32,9 +33,10 @@ func _physics_process(delta):
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction = Input.get_axis("Gamepad_Left", "Gamepad_Right")
 	if direction:
-		VEL = lerp(velocity, Vector2(SPEED * direction, 0), 0.01)
-		velocity.x = VEL.x
+		if velocity.x * direction < SPEED:
+			VEL = lerp(velocity, Vector2(LERP_SPEED * direction, 0), 0.01)
+			velocity.x = VEL.x
 	else:
-		velocity.x = move_toward(velocity.x, 0, 30)
+		velocity.x = move_toward(velocity.x, 0, 20)
 
 	move_and_slide()
