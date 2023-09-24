@@ -7,5 +7,6 @@ func _init():
 	height = 1
 	grounded = false
 	
-func OnPlace():
+func OnPlace(loc,tileMap):
+	super.OnPlace(loc,tileMap)
 	print_debug("lol")

@@ -12,20 +12,24 @@ func GetCollision():
 func GetDimensions():
 	return Vector2(width, height)
 
-func OnPlace():
-	pass
+func OnPlace(loc,tileMap):
+	var tempVec = loc
+	for x in range(width):
+			for y in range(height):
+				tempVec = loc + Vector2i(x, y)
+				tileMap.set_cell(2, tempVec, 1, Vector2i(0,0))
 
 func CheckIfPlaceable(loc,tileMap):
 	var tile
 	var tempVec = loc
-
-	for x in range(width):
-		for y in range(height):
-			tempVec = loc + Vector2i(x, y)
-			tile = tileMap.get_cell_tile_data(1, tempVec)
-			if tile:
-				modulate = Color("ad54ff3c")
-				return false
+	for layers in range(1, tileMap.get_layers_count()):
+		for x in range(width):
+			for y in range(height):
+				tempVec = loc + Vector2i(x, y)
+				tile = tileMap.get_cell_tile_data(layers, tempVec)
+				if tile:
+					modulate = Color("ad54ff3c")
+					return false
 	
 	if grounded:
 		return Grounded(loc, tileMap)

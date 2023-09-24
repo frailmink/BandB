@@ -36,7 +36,7 @@ func building(loc, trapName, col, buttonName):
 	if Input.is_action_just_pressed(buttonName) and placeable:
 		map.get_node("" + trapName.name).modulate = Color("ffffff")
 		col.set_disabled(false)
-		trapName.OnPlace()
+		trapName.OnPlace(tileMap.local_to_map(loc.global_position), tileMap)
 		return false
 	return true
 	
