@@ -1,12 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://ds6uced0i887k"]
+[gd_scene load_steps=11 format=3 uid="uid://dnn2ryx4oooct"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_j8uuo"]
 [ext_resource type="Texture2D" uid="uid://b56jn7hnw8jcw" path="res://sprites/tileset1.png" id="2_0ntie"]
-[ext_resource type="PackedScene" uid="uid://dxjlmffqrdmsk" path="res://player1.tscn" id="3_ga42h"]
+[ext_resource type="PackedScene" uid="uid://cnqli8shiwfd0" path="res://player1.tscn" id="3_ga42h"]
 [ext_resource type="Script" path="res://Camera2D.gd" id="3_gei1p"]
-[ext_resource type="PackedScene" uid="uid://blqi0ete8fhik" path="res://player2.tscn" id="4_3u282"]
+[ext_resource type="PackedScene" path="res://player2.tscn" id="4_3u282"]
 [ext_resource type="Texture2D" uid="uid://b1rcihx532a74" path="res://sprites/borderedBox.png" id="4_a8uhp"]
-[ext_resource type="PackedScene" uid="uid://dlicvg8nvofj7" path="res://cursor_keyboard.tscn" id="7_k08w4"]
+[ext_resource type="PackedScene" path="res://cursor_keyboard.tscn" id="7_k08w4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kw1e7"]
 texture = ExtResource("2_0ntie")
@@ -43,7 +43,7 @@ texture_region_size = Vector2i(32, 32)
 2:1/0 = 0
 2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 2:1/0/physics_layer_0/angular_velocity = 0.0
-2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 12.5, -16, 12.75, 16, -16, 16)
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 3:1/0 = 0
 3:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 3:1/0/physics_layer_0/angular_velocity = 0.0
@@ -193,6 +193,7 @@ layer_1/tile_data = PackedInt32Array(1245186, 65536, 1, 1310722, 65536, 1, 13762
 
 [node name="Player1" parent="Map1" instance=ExtResource("3_ga42h")]
 position = Vector2(620, 435)
+floor_block_on_wall = false
 
 [node name="Player2" parent="Map1" instance=ExtResource("4_3u282")]
 position = Vector2(536, 437)

@@ -1,5 +1,5 @@
 extends Node2D
-@onready var trap = load("res://traps/platform.tscn").instantiate()
+@onready var trap = load("res://traps/spike.tscn").instantiate()
 @onready var col = trap.GetCollision()
 @onready var map = $Map1
 @onready var tileMap = $Map1/TileMap
@@ -21,7 +21,7 @@ func _process(delta):
 	if buildingMode:
 		tileMap.set_layer_enabled(0, true)
 		placeable = MoveTrap(cursorMouse.global_position)
-	if Input.is_action_just_pressed("click") and placeable:
+	if Input.is_action_just_pressed("click") and placeable and buildingMode:
 		col.set_disabled(false)
 		map.get_node("" + trap.name).modulate = Color("ffffff")
 		trap.OnPlace()
@@ -30,21 +30,22 @@ func _process(delta):
 	
 func MoveTrap(cursorLoc):
 	var tempLoc = cursorLoc
+	var loc = Vector2i(0, 0)
 	tempLoc = tileMap.local_to_map(tempLoc)
-	var free = CheckIfPlaceable(tempLoc)
+	var free = trap.CheckIfPlaceable(loc,tileMap)
 	tempLoc = tileMap.map_to_local(tempLoc)
 	trap.global_position = tempLoc
 	return free
 	
-func CheckIfPlaceable(loc):
-	var tile
-	var tempVec = loc
-	for x in range(dimensions.x):
-		for y in range(dimensions.y):
-			tempVec = loc + Vector2i(x, y)
-			tile = tileMap.get_cell_tile_data(1, tempVec)
-			if tile:
-				map.get_node("" + trap.name).modulate = Color("ad54ff3c")
-				return false
-	map.get_node("" + trap.name).modulate = Color("adff4545")
-	return true
+#func CheckIfPlaceable(loc):
+#	var tile
+#	var tempVec = loc
+#	for x in range(dimensions.x):
+#		for y in range(dimensions.y):
+#			tempVec = loc + Vector2i(x, y)
+#			tile = tileMap.get_cell_tile_data(1, tempVec)
+#			if tile:
+#				map.get_node("" + trap.name).modulate = Color("ad54ff3c")
+#				return false
+#	map.get_node("" + trap.name).modulate = Color("adff4545")
+#	return true

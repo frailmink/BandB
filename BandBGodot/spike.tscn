@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://ljec1kysliba"]
+
+[ext_resource type="Script" path="res://spike.gd" id="1_mypnm"]
+
+[node name="Area2D" type="Area2D"]
+script = ExtResource("1_mypnm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Sprite2D"]

@@ -5,6 +5,7 @@ extends trap
 func _init():
 	width = 3
 	height = 1
+	grounded = false
 	
 func OnPlace():
 	print_debug("lol")
