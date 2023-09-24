@@ -5,6 +5,7 @@ class_name trap
 var width = 1
 var height = 1
 var grounded = true 
+var pLacEd = false
 
 func GetCollision():
 	return $Sprite2D/StaticBody2D/CollisionPolygon2D
@@ -14,6 +15,7 @@ func GetDimensions():
 
 func OnPlace(loc,tileMap):
 	var tempVec = loc
+	pLacEd = true 
 	for x in range(width):
 			for y in range(height):
 				tempVec = loc + Vector2i(x, y)

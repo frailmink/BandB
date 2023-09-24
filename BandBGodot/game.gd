@@ -15,7 +15,8 @@ var buildingModeController
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Map1/Camera2D.add_target($Map1/Player1, $Map1/Player2)
+	$Map1/Camera2D.add_target($Map1/Player1)
+	$Map1/Camera2D.add_target($Map1/Player2)
 	tileMap.set_layer_enabled(0, true)
 	StartOverAgain()
 	
@@ -23,9 +24,9 @@ func _ready():
 func _process(delta):
 	if buildingMode:
 		if buildingModeMouse:
-			buildingModeMouse = building(cursorMouse, trapKeyboard, colKeyboard, "click")
+			buildingModeMouse = building(cursorMouse, trapKeyboard, colKeyboard, "Click_Mouse")
 		if buildingModeController:
-			buildingModeController = building(cursorController, trapController, colController, "Gamepad_Jump")
+			buildingModeController = building(cursorController, trapController, colController, "Click_Controller")
 		if buildingModeController == false and buildingModeMouse == false:
 			buildingMode = false
 	else:
@@ -43,9 +44,7 @@ func building(loc, trapName, col, buttonName):
 	
 func MoveTrap(cursorLoc, trapName):
 	var tempLoc = cursorLoc
-#	var loc = Vector2i(0, 0)
 	tempLoc = tileMap.local_to_map(tempLoc)
-#	var free = trap.CheckIfPlaceable(loc,tileMap)
 	var free = trapName.CheckIfPlaceable(tempLoc,tileMap)
 	tempLoc = tileMap.map_to_local(tempLoc)
 	trapName.global_position = tempLoc
@@ -67,16 +66,11 @@ func SetTrapAgain(trapName, col):
 	col.set_disabled(true)
 	map.add_child(trapName, true)
 	
-	
-#func CheckIfPlaceable(loc):
-#	var tile
-#	var tempVec = loc
-#	for x in range(dimensions.x):
-#		for y in range(dimensions.y):
-#			tempVec = loc + Vector2i(x, y)
-#			tile = tileMap.get_cell_tile_data(1, tempVec)
-#			if tile:
-#				map.get_node("" + trap.name).modulate = Color("ad54ff3c")
-#				return false
-#	map.get_node("" + trap.name).modulate = Color("adff4545")
-#	return true
+func Restart_Scene():
+	# Implement what happens when the player dies.
+	# For example, you can play an animation, show a game over screen, or reset the scene.
+	# To restart the scene, you can use the following code:
+
+	# Get the current scene and reload it.
+	var current_scene = get_tree().get_current_scene()
+	get_tree().reload_current_scene()
