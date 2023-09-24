@@ -7,7 +7,7 @@ var height = 1
 var grounded = true 
 
 func GetCollision():
-	return $Sprite2D/StaticBody2D/CollisionShape2D
+	return $Sprite2D/StaticBody2D/CollisionPolygon2D
 
 func GetDimensions():
 	return Vector2(width, height)
