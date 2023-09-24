@@ -33,8 +33,11 @@ func _process(delta):
 	
 	global_position = global_position.lerp(midpoint, smoothing)
 
-func Delete_Target(t):
+func Delete_Target(n):
 	for target in targetinhos:
-		if target == t:
-			targetinhos.erase(target) 
+		if target.name == n:
+			targetinhos.erase(target)
+	if targetinhos.size() == 0:
+		var current_scene = get_tree().get_current_scene()
+		get_tree().reload_current_scene()
 	print_debug(targetinhos)

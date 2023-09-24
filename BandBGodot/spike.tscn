@@ -1,9 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://ljec1kysliba"]
+[gd_scene load_steps=2 format=3 uid="uid://jyqi3v6nbm76"]
 
-[ext_resource type="Script" path="res://spike.gd" id="1_mypnm"]
+[sub_resource type="GDScript" id="GDScript_mjn2s"]
+script/source = "extends trap
+
+func _init():
+	width = 2
+	height = 1
+	grounded = true
+	
+func OnPlace():
+	print_debug(\"Spike Placed\")
+
+#	var free = super.CheckIfPlaceable(loc,tileMap) 
+
+
+"
 
 [node name="Area2D" type="Area2D"]
-script = ExtResource("1_mypnm")
+script = SubResource("GDScript_mjn2s")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 

@@ -50,3 +50,8 @@ func _physics_process(delta):
 			CanDoubleJump = false
 
 	move_and_slide()
+	
+func die():
+	print_debug("YOU DIEEEEE HAHAHA ICE SPICE")
+	queue_free()
+	get_node("/root/Game/Map1/Camera2D").Delete_Target(name)

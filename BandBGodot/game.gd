@@ -65,12 +65,3 @@ func SetTrapAgain(trapName, col):
 	trapName.position = Vector2.ZERO
 	col.set_disabled(true)
 	map.add_child(trapName, true)
-	
-func Restart_Scene():
-	# Implement what happens when the player dies.
-	# For example, you can play an animation, show a game over screen, or reset the scene.
-	# To restart the scene, you can use the following code:
-
-	# Get the current scene and reload it.
-	var current_scene = get_tree().get_current_scene()
-	get_tree().reload_current_scene()

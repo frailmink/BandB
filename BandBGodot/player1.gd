@@ -1,15 +1,12 @@
 extends CharacterBody2D
 
-
 const SPEED = 300.0
 const JUMP_VELOCITY = -500.0
 var CanDoubleJump : bool = true
 const Wall_Jump_PushBack = 1000
 const Wall_Sliding_Speed = 5
-var is_Alive = true
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -51,6 +48,5 @@ func _physics_process(delta):
 func die():
 	print_debug("YOU DIEEEEE HAHAHA ICE SPICE")
 	queue_free()
-	is_Alive = false
-	get_node("/root/Game/Map1/Camera2D").Delete_Target(get_tree().getroot().get_node())
+	get_node("/root/Game/Map1/Camera2D").Delete_Target(name)
 	

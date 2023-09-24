@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsytr8td87paa"]
+[gd_scene load_steps=3 format=3 uid="uid://baou7qmxj0ewo"]
 
 [ext_resource type="Script" path="res://traps/Spike.gd" id="1_8e0ac"]
 [ext_resource type="Texture2D" uid="uid://ccad4o6sl4j82" path="res://sprites/Robotic Tiles/png/Tiles/Spike.png" id="2_m637h"]
@@ -13,11 +13,15 @@ scale = Vector2(0.332031, 0.220703)
 texture = ExtResource("2_m637h")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Sprite2D"]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Sprite2D/StaticBody2D"]
 polygon = PackedVector2Array(0, -26.0531, -24.0941, 73.6284, -42.1647, 5.66372, -66.2589, 82.6903, -90.353, -16.9912, -123.482, 123.469, 123.482, 123.469, 90.353, -12.4602, 63.2471, 91.7523, 42.1647, 14.7257, 24.0941, 73.6284)
 
 [node name="Area2D" type="Area2D" parent="Sprite2D"]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Sprite2D/Area2D"]
 polygon = PackedVector2Array(0, -44.177, -24.0941, 64.5664, -42.1647, -7.92921, -66.2589, 73.6284, -90.353, -30.5841, -132.518, 137.062, 129.506, 137.062, 90.353, -30.5841, 63.2471, 82.6903, 42.1647, 5.66372, 27.1059, 64.5664)
