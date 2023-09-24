@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b45008vurysct"
-path="res://.godot/imported/mouse1.png-c97a64be32e613df2046763ac2691d4e.ctex"
+uid="uid://cgftt567auxxl"
+path="res://.godot/imported/player2arth.png-98cb1deb782e99794f0c367cd9ac302a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/mouse1.png"
-dest_files=["res://.godot/imported/mouse1.png-c97a64be32e613df2046763ac2691d4e.ctex"]
+source_file="res://sprites/player2arth.png"
+dest_files=["res://.godot/imported/player2arth.png-98cb1deb782e99794f0c367cd9ac302a.ctex"]
 
 [params]
 

@@ -1,7 +1,7 @@
 extends trap
 
 func _init():
-	width = 2
+	width = 3
 	height = 1
 	
 func OnPlace():
