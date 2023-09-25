@@ -1,13 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://ds6uced0i887k"]
+[gd_scene load_steps=10 format=3 uid="uid://dnn2ryx4oooct"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_j8uuo"]
 [ext_resource type="Texture2D" uid="uid://b56jn7hnw8jcw" path="res://sprites/tileset1.png" id="2_0ntie"]
-[ext_resource type="PackedScene" uid="uid://dxjlmffqrdmsk" path="res://player1.tscn" id="3_ga42h"]
 [ext_resource type="Script" path="res://Camera2D.gd" id="3_gei1p"]
-[ext_resource type="PackedScene" uid="uid://blqi0ete8fhik" path="res://player2.tscn" id="4_3u282"]
 [ext_resource type="Texture2D" uid="uid://b1rcihx532a74" path="res://sprites/borderedBox.png" id="4_a8uhp"]
-[ext_resource type="PackedScene" uid="uid://dlicvg8nvofj7" path="res://cursor_keyboard.tscn" id="7_k08w4"]
-[ext_resource type="PackedScene" uid="uid://bhy3shr4wtru" path="res://cursor_controller.tscn" id="8_7vs3h"]
+[ext_resource type="PackedScene" path="res://cursor_keyboard.tscn" id="7_k08w4"]
+[ext_resource type="PackedScene" path="res://cursor_controller.tscn" id="8_7vs3h"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_kw1e7"]
 texture = ExtResource("2_0ntie")
@@ -198,13 +196,6 @@ layer_2/y_sort_enabled = false
 layer_2/y_sort_origin = 0
 layer_2/z_index = 0
 layer_2/tile_data = PackedInt32Array()
-
-[node name="Player2" parent="Map1" instance=ExtResource("4_3u282")]
-position = Vector2(568, 176)
-
-[node name="Player1" parent="Map1" instance=ExtResource("3_ga42h")]
-position = Vector2(472, 176)
-floor_block_on_wall = false
 
 [node name="cursorKeyboard" parent="Map1" instance=ExtResource("7_k08w4")]
 position = Vector2(576, 384)

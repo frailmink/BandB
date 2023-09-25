@@ -6,7 +6,7 @@ extends Node2D
 @onready var cursorMouse = $Map1/cursorKeyboard/Sprite2D/Marker2D
 @onready var cursorController = $Map1/cursorController/Sprite2D/Marker2D
 @onready var buildingMode = true
-@onready var numTraps = 2
+@onready var numTraps = 3
 var colKeyboard
 var colController
 var dimensionsKeyboard
@@ -20,9 +20,8 @@ var currentTrapIndexController = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Map1/Camera2D.add_target($Map1/Player1)
-	$Map1/Camera2D.add_target($Map1/Player2)
-	$Map1/Camera2D.add_target($Map1/cursorKeyboard)
+	#$Map1/Camera2D.add_target($Map1/cursorKeyboard)
+	Spawn_Players()
 	tileMap.set_layer_enabled(0, true)
 	StartOverAgain()
 	
@@ -127,3 +126,18 @@ func CheckIfKeyboardChangedTrap():
 		colKeyboard = trapKeyboard.GetCollision()
 		dimensionsKeyboard = trapKeyboard.GetDimensions()
 		SetTrapAgain(trapKeyboard, colKeyboard, cursorMouse.global_position)
+
+func Spawn_Players():
+	var player1 = preload("res://player1.tscn")
+	var player2 = preload("res://player2.tscn")
+	var new_player1 = player1.instantiate()
+	var new_player2 = player2.instantiate()
+	$Map1.add_child(new_player1)
+	$Map1.add_child(new_player2)
+	$Map1/Camera2D.add_target($Map1/Player1)
+	$Map1/Camera2D.add_target($Map1/Player2)
+#		var spawn_position = Vector2(100, 200)
+#		player1.global_position = spawn_position
+#		player2.global_position = spawn_position
+		#targets.append(new_player1)
+		#targets.append(new_player2)
