@@ -13,5 +13,5 @@ func OnPlace(loc,tileMap):
 
 
 func _on_area_2d_body_entered(body):
-	if body.has_method("die") and pLacEd:
+	if body.has_method("die") and placed:
 		body.die()  # Call a "die" function on the player (you need to implement this).

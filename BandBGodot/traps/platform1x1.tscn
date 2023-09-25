@@ -1,10 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bvjshoikk455n"]
+[gd_scene load_steps=3 format=3 uid="uid://bvjshoikk455n"]
 
 [ext_resource type="Script" path="res://traps/platform1x1.gd" id="1_oaa8k"]
 [ext_resource type="Texture2D" uid="uid://b56jn7hnw8jcw" path="res://sprites/tileset1.png" id="2_chqad"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_k0l0o"]
-size = Vector2(32, 26)
 
 [node name="platform1x1" type="Node2D"]
 script = ExtResource("1_oaa8k")
@@ -15,7 +12,8 @@ region_enabled = true
 region_rect = Rect2(32, 64, 32, 32)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Sprite2D"]
+collision_layer = 3
+collision_mask = 3
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/StaticBody2D"]
-position = Vector2(0, -3)
-shape = SubResource("RectangleShape2D_k0l0o")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Sprite2D/StaticBody2D"]
+polygon = PackedVector2Array(0, -16, -16, -16, -16, 9, -16, 9, -16, 10, -11, 10, -11, 9, -3, 9, -3, 10, 5, 10, 5, 9, 10, 9, 11, 10, 16, 10, 16, -16)
