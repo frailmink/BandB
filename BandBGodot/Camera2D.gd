@@ -42,5 +42,5 @@ func Delete_Target(n):
 	if targets.size() == 0:
 		#var current_scene = get_tree().get_current_scene()
 		#get_tree().reload_current_scene()
-		get_node("/root/Game").Spawn_Players()
+		get_node("/root/Game").playersDead = true
 	print_debug(targets)

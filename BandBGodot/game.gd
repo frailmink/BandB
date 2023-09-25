@@ -1,12 +1,14 @@
 extends Node2D
-@onready var trapKeyboard = load("res://traps/spike.tscn").instantiate()
-@onready var trapController = load("res://traps/platform.tscn").instantiate()
 @onready var map = $Map1
 @onready var tileMap = $Map1/TileMap
 @onready var cursorMouse = $Map1/cursorKeyboard/Sprite2D/Marker2D
 @onready var cursorController = $Map1/cursorController/Sprite2D/Marker2D
+@onready var cursorM = $Map1/cursorKeyboard
+@onready var cursorC = $Map1/cursorController
 @onready var buildingMode = true
 @onready var numTraps = 3
+var trapKeyboard
+var trapController
 var colKeyboard
 var colController
 var dimensionsKeyboard
@@ -17,16 +19,17 @@ var trapArrayKeyboard = []
 var trapArrayController = []
 var currentTrapIndexKeyboard = 0
 var currentTrapIndexController = 0
+var playersDead = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#$Map1/Camera2D.add_target($Map1/cursorKeyboard)
 	Spawn_Players()
-	tileMap.set_layer_enabled(0, true)
-	StartOverAgain()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if playersDead:
+		Spawn_Players()
 	if buildingMode:
 		if buildingModeMouse:
 			CheckIfKeyboardChangedTrap()
@@ -58,6 +61,7 @@ func MoveTrap(cursorLoc, trapName):
 	return free
 	
 func StartOverAgain():
+	tileMap.set_layer_enabled(0, true)	
 	trapArrayKeyboard = GetNewTraps()
 	trapKeyboard = load("res://traps/" + trapArrayKeyboard[0] + ".tscn").instantiate()
 	trapArrayController = GetNewTraps()
@@ -71,6 +75,7 @@ func StartOverAgain():
 	dimensionsController = trapController.GetDimensions()
 	SetTrapAgain(trapKeyboard, colKeyboard, cursorMouse.global_position)
 	SetTrapAgain(trapController, colController, cursorController.global_position)
+	MoveCursorsToFront()
 
 func SetTrapAgain(trapName, col, loc):
 	trapName.position = loc
@@ -97,6 +102,7 @@ func CheckIfControllerChangedTrap():
 		colController = trapController.GetCollision()
 		dimensionsController = trapController.GetDimensions()
 		SetTrapAgain(trapController, colController, cursorController.global_position)
+		MoveCursorsToFront()
 	elif Input.is_action_just_pressed("Rotate_Right_Controller"):
 		currentTrapIndexController += 1
 		if currentTrapIndexController >= trapArrayController.size():
@@ -106,6 +112,7 @@ func CheckIfControllerChangedTrap():
 		colController = trapController.GetCollision()
 		dimensionsController = trapController.GetDimensions()
 		SetTrapAgain(trapController, colController, cursorController.global_position)
+		MoveCursorsToFront()
 
 func CheckIfKeyboardChangedTrap():
 	if Input.is_action_just_pressed("Rotate_Left_Keyboard"):
@@ -117,6 +124,7 @@ func CheckIfKeyboardChangedTrap():
 		colKeyboard = trapKeyboard.GetCollision()
 		dimensionsKeyboard = trapKeyboard.GetDimensions()
 		SetTrapAgain(trapKeyboard, colKeyboard, cursorMouse.global_position)
+		MoveCursorsToFront()
 	elif Input.is_action_just_pressed("Rotate_Right_Keyboard"):
 		currentTrapIndexKeyboard += 1
 		if currentTrapIndexKeyboard >= trapArrayKeyboard.size():
@@ -126,18 +134,24 @@ func CheckIfKeyboardChangedTrap():
 		colKeyboard = trapKeyboard.GetCollision()
 		dimensionsKeyboard = trapKeyboard.GetDimensions()
 		SetTrapAgain(trapKeyboard, colKeyboard, cursorMouse.global_position)
+		MoveCursorsToFront()
 
 func Spawn_Players():
-	var player1 = preload("res://player1.tscn")
-	var player2 = preload("res://player2.tscn")
-	var new_player1 = player1.instantiate()
-	var new_player2 = player2.instantiate()
-	$Map1.add_child(new_player1)
-	$Map1.add_child(new_player2)
+	playersDead = false
+	var player1 = preload("res://player1.tscn").instantiate()
+	var player2 = preload("res://player2.tscn").instantiate()
+	MoveCursorsToFront()
+	$Map1.add_child(player1)
+	$Map1.add_child(player2)
 	$Map1/Camera2D.add_target($Map1/Player1)
 	$Map1/Camera2D.add_target($Map1/Player2)
+	StartOverAgain()	
 #		var spawn_position = Vector2(100, 200)
 #		player1.global_position = spawn_position
 #		player2.global_position = spawn_position
 		#targets.append(new_player1)
 		#targets.append(new_player2)
+		
+func MoveCursorsToFront():
+	cursorM.move_to_front()
+	cursorC.move_to_front()
