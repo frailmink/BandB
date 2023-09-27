@@ -12,8 +12,8 @@ var trapController
 var colKeyboard
 var colController
 var dimensionsKeyboard
-var dimensionsController
 var buildingModeMouse
+var dimensionsController
 var buildingModeController
 var trapArrayKeyboard = []
 var trapArrayController = []
@@ -146,6 +146,8 @@ func Spawn_Players():
 	$Map1/Camera2D.add_target($Map1/Player1)
 	$Map1/Camera2D.add_target($Map1/Player2)
 	StartOverAgain()	
+	player1.set_global_position(Vector2(0, 300))
+	player2.set_global_position(Vector2(100, 300)) 
 #		var spawn_position = Vector2(100, 200)
 #		player1.global_position = spawn_position
 #		player2.global_position = spawn_position

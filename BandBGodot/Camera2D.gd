@@ -29,7 +29,7 @@ func _process(delta):
 				var distance = target1.global_position.distance_to(target2.global_position)
 				max_distance = max(max_distance, distance)
 	#var desired_zoom = clamp(1000 / distance, zoom_min, zoom_max)
-	var desired_zoom = clamp(1000 / max_distance, zoom_min, zoom_max)
+	var desired_zoom = clamp(700 / max_distance, zoom_min, zoom_max)
 	zoom.x = lerp(zoom.x, desired_zoom, zoom_speed)
 	zoom.y = lerp(zoom.y, desired_zoom, zoom_speed)
 	

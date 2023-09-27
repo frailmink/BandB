@@ -5,8 +5,10 @@ const JUMP_VELOCITY = -500.0
 var CanDoubleJump : bool = true
 const Wall_Jump_PushBack = 1000
 const Wall_Sliding_Speed = 5
+const LERP_SPEED = 1000
+var VEL = Vector2()
 # Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var gravity = 1500 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -29,7 +31,10 @@ func _physics_process(delta):
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction = Input.get_axis("Keyboard_Left", "Keyboard_Right")
 	if direction:
-		velocity.x = direction * SPEED
+		if velocity.x * direction < SPEED:
+			VEL = lerp(velocity, Vector2(LERP_SPEED * direction, 0), 0.42)
+			velocity.x = VEL.x
+		#velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		
@@ -46,7 +51,7 @@ func _physics_process(delta):
 	move_and_slide()
 
 func die():
-	print_debug("YOU DIEEEEE HAHAHA ICE SPICE")
+	print_debug("YOU DIE")
 	queue_free()
 	get_node("/root/Game/Map1/Camera2D").Delete_Target(name)
 	

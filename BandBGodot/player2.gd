@@ -13,7 +13,7 @@ const Wall_Sliding_Speed = 5
 
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+var gravity = 1500 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
 
 func _physics_process(delta):
@@ -33,7 +33,7 @@ func _physics_process(delta):
 	
 	if direction:
 		if velocity.x * direction < SPEED:
-			VEL = lerp(velocity, Vector2(LERP_SPEED * direction, 0), 0.01)
+			VEL = lerp(velocity, Vector2(LERP_SPEED * direction, 0), 0.05)
 			velocity.x = VEL.x
 	else:
 		velocity.x = move_toward(velocity.x, 0, 20)
@@ -52,6 +52,6 @@ func _physics_process(delta):
 	move_and_slide()
 	
 func die():
-	print_debug("YOU DIEEEEE HAHAHA ICE SPICE")
+	print_debug("YOU DIE")
 	queue_free()
 	get_node("/root/Game/Map1/Camera2D").Delete_Target(name)
