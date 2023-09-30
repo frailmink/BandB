@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dlicvg8nvofj7"]
+[gd_scene load_steps=3 format=3 uid="uid://dhiy0d8tymfl8"]
 
 [ext_resource type="Script" path="res://cursorKeyboard.gd" id="1_siit1"]
 [ext_resource type="Texture2D" uid="uid://hmib1yhr7lj" path="res://sprites/mouseCursor.png" id="2_5gpk5"]

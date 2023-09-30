@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://bhy3shr4wtru"]
+[gd_scene load_steps=3 format=3 uid="uid://bikov2cwqwkvx"]
 
 [ext_resource type="Texture2D" uid="uid://cnljdnanm2s1c" path="res://sprites/controllerCursor.png" id="1_j8kh0"]
 [ext_resource type="Script" path="res://cursor_controller.gd" id="1_tm1xx"]

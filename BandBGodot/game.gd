@@ -20,16 +20,16 @@ var trapArrayController = []
 var currentTrapIndexKeyboard = 0
 var currentTrapIndexController = 0
 var playersDead = false
-
+var spawned = false 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#$Map1/Camera2D.add_target($Map1/cursorKeyboard)
-	Spawn_Players()
-	
+	StartOverAgain()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+		#Spawn_Players()
 	if playersDead:
-		Spawn_Players()
+		StartOverAgain()
 	if buildingMode:
 		if buildingModeMouse:
 			CheckIfKeyboardChangedTrap()
@@ -41,6 +41,10 @@ func _process(delta):
 			buildingMode = false
 	else:
 		tileMap.set_layer_enabled(0, false)
+		if !spawned:
+			Spawn_Players()
+			
+			
 		
 func building(loc, trapName, col, buttonName):
 	var placeable = MoveTrap(loc.global_position, trapName)
@@ -61,6 +65,8 @@ func MoveTrap(cursorLoc, trapName):
 	return free
 	
 func StartOverAgain():
+	spawned = false
+	playersDead = false
 	tileMap.set_layer_enabled(0, true)	
 	trapArrayKeyboard = GetNewTraps()
 	trapKeyboard = load("res://traps/" + trapArrayKeyboard[0] + ".tscn").instantiate()
@@ -138,16 +144,16 @@ func CheckIfKeyboardChangedTrap():
 
 func Spawn_Players():
 	playersDead = false
-	var player1 = preload("res://player1.tscn").instantiate()
+	spawned = true 
 	var player2 = preload("res://player2.tscn").instantiate()
+	var player1 = preload("res://player1.tscn").instantiate()
 	MoveCursorsToFront()
-	$Map1.add_child(player1)
 	$Map1.add_child(player2)
-	$Map1/Camera2D.add_target($Map1/Player1)
+	$Map1.add_child(player1)
 	$Map1/Camera2D.add_target($Map1/Player2)
-	StartOverAgain()	
-	player1.set_global_position(Vector2(0, 300))
-	player2.set_global_position(Vector2(100, 300)) 
+	$Map1/Camera2D.add_target($Map1/Player1)
+	player2.set_global_position($Map1/SpawnPoint.position) 
+	player1.set_global_position($Map1/SpawnPoint.position)
 #		var spawn_position = Vector2(100, 200)
 #		player1.global_position = spawn_position
 #		player2.global_position = spawn_position

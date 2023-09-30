@@ -1,6 +1,6 @@
 extends Node2D
 
-var moveSpeed = 500
+var moveSpeed = 1000
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
