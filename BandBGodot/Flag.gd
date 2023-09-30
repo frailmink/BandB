@@ -12,6 +12,7 @@ func _process(delta):
 
 func _on_EndPoint_body_entered(body):
 	body.die()
-#	if body.name == "Player1" || "Player2":  # Assuming your player's name is "Player"
-#		print_debug("Player Finished")
-#		body.queue_free()
+	if body.name == "Player1":  # Assuming your player's name is "Player"
+		print_debug("Player1 Finished")
+	if body.name == "Player2":
+		print_debug("Player2 Finished")
