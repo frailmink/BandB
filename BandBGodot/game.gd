@@ -25,6 +25,7 @@ var spawned = false
 func _ready():
 	#$Map1/Camera2D.add_target($Map1/cursorKeyboard)
 	StartOverAgain()
+	tileMap.set_layer_enabled(2, false)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 		#Spawn_Players()
