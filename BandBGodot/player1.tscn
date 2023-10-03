@@ -20,5 +20,3 @@ shape = SubResource("CapsuleShape2D_o5tm7")
 position = Vector2(16, -17)
 scale = Vector2(0.944336, 1.00195)
 texture = ExtResource("1_qktai")
-
-[connection signal="child_entered_tree" from="CollisionShape2D" to="." method="_on_Player_body_entered"]

@@ -41,12 +41,15 @@ func CheckIfPlaceable(loc,tileMap):
 		return true
 
 func Grounded(loc,tileMap):
-	var tile
+	var tileFromLayer1
+	var tileFromLayer2
 	var tempVec = loc
 	for x in range(width):
 		tempVec = loc + Vector2i(x, 1)
-		tile = tileMap.get_cell_tile_data(1, tempVec)
-		if tile == null:
+		tileFromLayer1 = tileMap.get_cell_tile_data(1, tempVec)
+		# gets tile from layer 3
+		tileFromLayer2 = tileMap.get_cell_tile_data(3, tempVec)
+		if tileFromLayer1 == null and tileFromLayer2 == null:
 			modulate = Color("ad54ff3c")
 			return false
 	modulate = Color("adff4545")

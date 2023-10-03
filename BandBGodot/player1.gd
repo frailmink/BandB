@@ -53,5 +53,9 @@ func _physics_process(delta):
 func die():
 	print_debug("YOU DIE")
 	queue_free()
+	var rocket = preload("res://rocket.tscn").instantiate()
+	rocket.SetInputs("Keyboard_Left", "Keyboard_Right", "Click_Mouse")
+	get_node("/root/Game/Map1").add_child(rocket)
+	rocket.set_global_position(global_position)
 	get_node("/root/Game/Map1/Camera2D").Delete_Target(name)
 	
