@@ -353,10 +353,10 @@ position = Vector2(-33, 13)
 scale = Vector2(1.5, 1.5)
 
 [node name="SpawnPoint" type="Marker2D" parent="Map1"]
-position = Vector2(-1478, 467)
+position = Vector2(-1478, 428)
 
 [node name="SpawnPoint2" parent="Map1/SpawnPoint" instance=ExtResource("9_n5cw7")]
-position = Vector2(0, 5)
+position = Vector2(0, 44)
 
 [node name="EndPoint" parent="." instance=ExtResource("8_f57o1")]
 position = Vector2(228, -378)
