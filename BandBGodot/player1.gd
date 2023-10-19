@@ -9,6 +9,11 @@ const LERP_SPEED = 1000
 var VEL = Vector2()
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = 1500 #ProjectSettings.get_setting("physics/2d/default_gravity")
+@onready var anim = get_node("AnimatedSprite2D")
+
+func _ready():
+	anim.play("Idle")
+
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -32,10 +37,16 @@ func _physics_process(delta):
 	var direction = Input.get_axis("Keyboard_Left", "Keyboard_Right")
 	if direction:
 		if velocity.x * direction < SPEED:
+			if direction == -1:
+				$AnimatedSprite2D.flip_h = true 
+			elif direction == 1:
+				$AnimatedSprite2D.flip_h = false 
+			anim.play("Move")
 			VEL = lerp(velocity, Vector2(LERP_SPEED * direction, 0), 0.42)
 			velocity.x = VEL.x
 		#velocity.x = direction * SPEED
 	else:
+		anim.play("Idle")
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		
 	# Handle Jump.
