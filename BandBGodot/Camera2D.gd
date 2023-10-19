@@ -18,7 +18,8 @@ func _process(delta):
 	#var midpoint = (target1.global_position + target2.global_position) / 2
 	#var distance = target1.global_position.distance_to(target2.global_position)
 	if targets.size() == 0:
-		zoom = Vector2(0.58,0.58)
+		zoom = Vector2(0.9,0.9) #0.56
+		global_position = Vector2(-999,0)
 	else:
 		for target in targets:
 			#count += 1
