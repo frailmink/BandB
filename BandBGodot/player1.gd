@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+# test comment
+
 const SPEED = 300.0
 const JUMP_VELOCITY = -500.0
 var CanDoubleJump : bool = true
