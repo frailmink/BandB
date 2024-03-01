@@ -11,8 +11,6 @@ const Wall_Jump_PushBack = 210
 const Wall_Sliding_Speed = 5
 @onready var anim = get_node("AnimatedSprite2D")
 
-# added a comment
-
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = 1500 #ProjectSettings.get_setting("physics/2d/default_gravity")
 
